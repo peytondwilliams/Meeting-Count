@@ -1,10 +1,8 @@
-import java.util.Calendar;
-import java.util.HashMap;
-
 public interface Count_Interface {
 
     //Will include a data structure to store meeting dates
 
-    int add(Calendar start, Calendar end);
-    int count(Calendar start, Calendar end);
+    boolean read_csv(String file);
+    void add(String start, String end, String day_of_week);
+    int count(String start, String end, String day_of_week);
 }
