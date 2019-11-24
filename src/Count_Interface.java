@@ -1,3 +1,5 @@
+import java.time.format.DateTimeFormatter;
+
 /**
  * Interface for counting meetings
  *
@@ -7,6 +9,8 @@
  */
 
 public interface Count_Interface {
+
+    final DateTimeFormatter date_format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     //Will include a data structure to store meeting dates
 
