@@ -28,6 +28,7 @@ public class Simple implements Count_Interface{
 
     public boolean read_csv(String file_path) {
         BufferedReader reader;
+        BufferedReader holiday_reader;
 
         try {
             reader = new BufferedReader(new FileReader(file_path));
@@ -48,6 +49,25 @@ public class Simple implements Count_Interface{
             System.out.println("Error on file read.");
             return false;
         }
+
+        try {
+            holiday_reader = new BufferedReader(new FileReader("holidays.txt"));
+            try {
+                String row;
+                while ((row = holiday_reader.readLine()) != null) {
+                    if (count_calender.get(row) != null) {
+                        count_calender.remove(row);
+                    }
+                }
+            }
+            catch (IOException err) {
+                System.out.println("Error while parsing holiday text file");
+            }
+        }
+        catch (FileNotFoundException err) {
+            System.out.println("Holidays file not found");
+        }
+
 
         return true;
     }
