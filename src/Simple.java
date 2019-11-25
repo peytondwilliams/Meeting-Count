@@ -33,6 +33,7 @@ public class Simple implements Count_Interface{
                 String row;
                 while ((row = reader.readLine()) != null) {
                     String[] line = row.split(", ");
+                    System.out.println("added");
                     add(line[0], line[1], line[2]);
                 }
             }
@@ -79,7 +80,7 @@ public class Simple implements Count_Interface{
             start = start.plusDays(weekday.getValue() - start.getDayOfWeek().getValue());
         }
         else if (start.getDayOfWeek().getValue() > weekday.getValue()) {
-            start = start.plusDays(7 - (weekday.getValue() - start.getDayOfWeek().getValue()));
+            start = start.plusDays(7 - (start.getDayOfWeek().getValue() - weekday.getValue()));
         }
 
         //adds dates to count_calender
@@ -98,13 +99,12 @@ public class Simple implements Count_Interface{
         LocalDate end = LocalDate.parse(end_date, date_format);
         DayOfWeek weekday = DayOfWeek.valueOf(day_of_week.toUpperCase());
 
-
         //formats date to start on the given day of week
         if (start.getDayOfWeek().getValue() < weekday.getValue()) {
             start = start.plusDays(weekday.getValue() - start.getDayOfWeek().getValue());
         }
         else if (start.getDayOfWeek().getValue() > weekday.getValue()) {
-            start = start.plusDays(7 - (weekday.getValue() - start.getDayOfWeek().getValue()));
+            start = start.plusDays(7 - (start.getDayOfWeek().getValue() - weekday.getValue()));
         }
 
         int count = 0;
