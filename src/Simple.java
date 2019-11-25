@@ -79,7 +79,7 @@ public class Simple implements Count_Interface{
             start = start.plusDays(weekday.getValue() - start.getDayOfWeek().getValue());
         }
         else if (start.getDayOfWeek().getValue() > weekday.getValue()) {
-            start = start.plusDays(7 - weekday.getValue() - start.getDayOfWeek().getValue());
+            start = start.plusDays(7 - (weekday.getValue() - start.getDayOfWeek().getValue()));
         }
 
         //adds dates to count_calender
@@ -104,7 +104,7 @@ public class Simple implements Count_Interface{
             start = start.plusDays(weekday.getValue() - start.getDayOfWeek().getValue());
         }
         else if (start.getDayOfWeek().getValue() > weekday.getValue()) {
-            start = start.plusDays(7 - weekday.getValue() - start.getDayOfWeek().getValue());
+            start = start.plusDays(7 - (weekday.getValue() - start.getDayOfWeek().getValue()));
         }
 
         int count = 0;

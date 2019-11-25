@@ -151,7 +151,7 @@ public class Complex implements Count_Interface {
             start = start.plusDays(weekday.getValue() - start.getDayOfWeek().getValue());
         }
         else if (start.getDayOfWeek().getValue() > weekday.getValue()) {
-            start = start.plusDays(7 - weekday.getValue() - start.getDayOfWeek().getValue());
+            start = start.plusDays(7 - (start.getDayOfWeek().getValue() - weekday.getValue()));
         }
 
         //adds dates to count_calender, support added for multiple meetings on the same day
@@ -180,11 +180,12 @@ public class Complex implements Count_Interface {
 
 
         //formats date to start on the given day of week
-        if (start.getDayOfWeek().getValue() < weekday.getValue()) {
+        if (start.getDayOfWeek().getValue() < weekday.getValue()) {//if the weekday we are at comes before the weekday we are looking for
             start = start.plusDays(weekday.getValue() - start.getDayOfWeek().getValue());
+
         }
-        else if (start.getDayOfWeek().getValue() > weekday.getValue()) {
-            start = start.plusDays(7 - weekday.getValue() - start.getDayOfWeek().getValue());
+        else if (start.getDayOfWeek().getValue() > weekday.getValue()) {//if the weekday we are at comes after the weekday we are looking for
+            start = start.plusDays(7 - (start.getDayOfWeek().getValue() - weekday.getValue()));
         }
 
         int count = 0;
@@ -210,7 +211,7 @@ public class Complex implements Count_Interface {
             if (!read_correct) {
                 return;
             }
-            boolean user_read_correct = counter.read_input_csv(args[2]);
+            boolean user_read_correct = counter.read_input_csv(args[1]);
             if (!user_read_correct) {
                 return;
             }
