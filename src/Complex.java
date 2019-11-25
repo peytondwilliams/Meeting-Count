@@ -18,9 +18,9 @@ import java.util.Scanner;
  *
  */
 
-public class Simple implements Count_Interface{
+public class Complex implements Count_Interface{
 
-    public Simple() {
+    public Complex() {
         count_calender = new HashMap<>();
     }
 
@@ -28,6 +28,10 @@ public class Simple implements Count_Interface{
 
 
     public boolean read_csv(String file_path) {
+        assert file_path != null;
+        assert file_path.endsWith(".csv");
+
+
         BufferedReader reader;
         BufferedReader holiday_reader;
 
@@ -42,6 +46,7 @@ public class Simple implements Count_Interface{
             }
             catch (IOException err) {
                 System.out.println("Error on file read.");
+                System.out.println(err);
                 return false;
             }
         }
@@ -62,10 +67,12 @@ public class Simple implements Count_Interface{
             }
             catch (IOException err) {
                 System.out.println("Error while parsing holiday text file");
+                return false;
             }
         }
         catch (FileNotFoundException err) {
             System.out.println("Holidays file not found");
+            return false;
         }
 
 
@@ -74,6 +81,10 @@ public class Simple implements Count_Interface{
 
 
     public void add(String start_date, String end_date, String day_of_week) {
+        assert start_date != null;
+        assert end_date != null;
+        assert day_of_week != null;
+
         LocalDate start = LocalDate.parse(start_date, date_format);
         LocalDate end = LocalDate.parse(end_date, date_format);
         DayOfWeek weekday = DayOfWeek.valueOf(day_of_week.toUpperCase());
@@ -98,6 +109,10 @@ public class Simple implements Count_Interface{
 
 
     public int count(String start_date, String end_date, String day_of_week) {
+        assert start_date != null;
+        assert  end_date != null;
+        assert  day_of_week != null;
+
         LocalDate start =  LocalDate.parse(start_date, date_format);
         LocalDate end = LocalDate.parse(end_date, date_format);
         DayOfWeek weekday = DayOfWeek.valueOf(day_of_week.toUpperCase());
@@ -127,23 +142,20 @@ public class Simple implements Count_Interface{
 
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Simple counter = new Simple();
+        Complex counter = new Complex();
 
-        System.out.println("Please enter a csv file path to parse input");
-        counter.read_csv(scanner.nextLine());
+        if (args.length == 3) {
+            counter.read_csv(args[0]);
 
-        System.out.println("Please enter a date (yyyy-mm-dd) to start counting: ");
-        String start_date = scanner.nextLine();
-
-        System.out.println("Please enter a date (yyyy-mm-dd) to end counting: ");
-        String end_date = scanner.nextLine();
-
-        System.out.println("Please enter a day of week: ");
-        String day_of_week = scanner.nextLine();
-
-        int count = counter.count(start_date, end_date, day_of_week);
-        System.out.println("The number of meetings between " + start_date + " and " + end_date + " is: " + count);
+        }
+        else if (args.length == 4) {
+            counter.read_csv(args[0]);
+            int count = counter.count(args[1], args[2], args[3]);
+            System.out.println("The number of meetings between " + args[1] + " and " + args[2] + " is: " + count);
+        }
+        else {
+            System.out.println("Incorrect number of arguments, please try again");
+        }
     }
 
 }
