@@ -1,8 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

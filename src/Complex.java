@@ -4,17 +4,16 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 import java.util.HashMap;
-import java.util.Scanner;
 
 /**
- * Simple meeting count implementation
+ * Complex meeting count implementation
  *
  * @author Peyton D Williams will1892@purdue.edu
  * @version 11/24/2019
  *
  */
 
-public class Complex implements Count_Interface{
+public class Complex implements Count_Interface {
 
     public Complex() {
         count_calender = new HashMap<>();
@@ -74,6 +73,14 @@ public class Complex implements Count_Interface{
         return true;
     }
 
+
+    /**
+     * reads the passed user csv file and outputs an Output.csv with meeting counts
+     *
+     * @param file_path a filepath to user input file
+     *
+     * @return if read was successful
+     */
     public boolean read_input_csv(String file_path) {
         assert file_path != null;
         assert file_path.endsWith(".csv");
@@ -97,7 +104,7 @@ public class Complex implements Count_Interface{
             return false;
         }
 
-        try {
+        try { //reads the user input file and writes to Output.txt
             String row;
             while ((row = reader.readLine()) != null) {
                 String[] line = row.split(", ");
@@ -147,14 +154,18 @@ public class Complex implements Count_Interface{
             start = start.plusDays(7 - weekday.getValue() - start.getDayOfWeek().getValue());
         }
 
-        //adds dates to count_calender
+        //adds dates to count_calender, support added for multiple meetings on the same day
         while (start.isBefore(end)) {
             String curr_date = start.toString();
-            count_calender.put(curr_date, 1);
+            if (count_calender.get(curr_date) == null) {
+                count_calender.put(curr_date, 1);
+            }
+            else {
+                count_calender.put(curr_date, count_calender.get(curr_date) + 1);
+            }
 
             start = start.plusDays(7);
         }
-
     }
 
 
@@ -182,7 +193,7 @@ public class Complex implements Count_Interface{
         while(start.isBefore(end)) {
             String curr_date = start.toString();
             if (count_calender.get(curr_date) != null) {
-                count++;
+                count += count_calender.get(curr_date);
             }
             start = start.plusDays(7);
         }
@@ -194,12 +205,15 @@ public class Complex implements Count_Interface{
     public static void main(String[] args) {
         Complex counter = new Complex();
 
-        if (args.length == 3) {
+        if (args.length == 2) {
             boolean read_correct = counter.read_csv(args[0]);
             if (!read_correct) {
                 return;
             }
-
+            boolean user_read_correct = counter.read_input_csv(args[2]);
+            if (!user_read_correct) {
+                return;
+            }
 
         }
         else if (args.length == 4) {
@@ -214,5 +228,4 @@ public class Complex implements Count_Interface{
             System.out.println("Incorrect number of arguments, please try again");
         }
     }
-
 }
