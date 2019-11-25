@@ -1,8 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -31,7 +27,6 @@ public class Complex implements Count_Interface{
         assert file_path != null;
         assert file_path.endsWith(".csv");
 
-
         BufferedReader reader;
         BufferedReader holiday_reader;
 
@@ -46,7 +41,6 @@ public class Complex implements Count_Interface{
             }
             catch (IOException err) {
                 System.out.println("Error on file read.");
-                System.out.println(err);
                 return false;
             }
         }
@@ -57,24 +51,80 @@ public class Complex implements Count_Interface{
 
         try {
             holiday_reader = new BufferedReader(new FileReader("holidays.txt"));
-            try {
-                String row;
-                while ((row = holiday_reader.readLine()) != null) {
-                    if (count_calender.get(row) != null) {
-                        count_calender.remove(row);
-                    }
-                }
-            }
-            catch (IOException err) {
-                System.out.println("Error while parsing holiday text file");
-                return false;
-            }
         }
         catch (FileNotFoundException err) {
             System.out.println("Holidays file not found");
             return false;
         }
 
+
+        try {
+            String row;
+            while ((row = holiday_reader.readLine()) != null) {
+                if (count_calender.get(row) != null) {
+                    count_calender.remove(row);
+                }
+            }
+        }
+        catch (IOException err) {
+            System.out.println("Error while parsing holiday text file");
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean read_input_csv(String file_path) {
+        assert file_path != null;
+        assert file_path.endsWith(".csv");
+
+        BufferedReader reader;
+        FileWriter writer;
+
+        try {
+            reader = new BufferedReader(new FileReader(file_path));
+        }
+        catch (FileNotFoundException err) {
+            System.out.println("User input file not found");
+            return false;
+        }
+
+        try {
+            writer = new FileWriter("Output.csv");
+        }
+        catch (IOException err) {
+            System.out.println("error creating Output.csv");
+            return false;
+        }
+
+        try {
+            String row;
+            while ((row = reader.readLine()) != null) {
+                String[] line = row.split(", ");
+                int new_count = count(line[0], line[1], line[2]);
+                writer.append(line[0]);
+                writer.append(", ");
+                writer.append(line[1]);
+                writer.append(", ");
+                writer.append(line[2]);
+                writer.append(", ");
+                writer.append(Integer.toString(new_count));
+                writer.append("\n");
+            }
+        }
+        catch (IOException err) {
+            System.out.println("Error reading user input file");
+            return false;
+        }
+
+        try {
+            writer.flush();
+            writer.close();
+        }
+        catch (IOException err) {
+            System.out.println("Output.csv did not write and close correctly");
+            return false;
+        }
 
         return true;
     }
@@ -145,11 +195,18 @@ public class Complex implements Count_Interface{
         Complex counter = new Complex();
 
         if (args.length == 3) {
-            counter.read_csv(args[0]);
+            boolean read_correct = counter.read_csv(args[0]);
+            if (!read_correct) {
+                return;
+            }
+
 
         }
         else if (args.length == 4) {
-            counter.read_csv(args[0]);
+            boolean read_correct = counter.read_csv(args[0]);
+            if (!read_correct) {
+                return;
+            }
             int count = counter.count(args[1], args[2], args[3]);
             System.out.println("The number of meetings between " + args[1] + " and " + args[2] + " is: " + count);
         }
